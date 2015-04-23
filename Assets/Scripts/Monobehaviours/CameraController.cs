@@ -43,10 +43,12 @@ public class CameraController : MonoBehaviour {
 		
 		transform.eulerAngles = new Vector3(angle, transform.eulerAngles.y, transform.eulerAngles.z);
 		transform.position = new Vector3( cameraTo.x, yZoom, cameraTo.z);
-
+		
+		Debug.Log(Input.GetAxis("Mouse ScrollWheel"));
 	}
 
 	void Translate(){
+		Debug.Log("Translate started");
 		Vector3 translation = Vector3.zero;
 
 		float xPan = translation.x - Input.GetAxis("Mouse X") * -dragSpeed *Time.deltaTime;
