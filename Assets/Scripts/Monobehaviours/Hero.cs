@@ -12,8 +12,8 @@ public class Hero : MonoBehaviour {
 
 	public float radius = 1f;
 
-	public Collider[] nearby;
-	public LayerMask lookingFor;	
+	public Collider[] nearbyEnemies;
+	public LayerMask enemies;	
 	
 	// Use this for initialization
 	void Start () {

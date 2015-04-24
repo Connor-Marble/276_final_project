@@ -42,7 +42,7 @@ public class CameraController : MonoBehaviour {
 		float angle = Mathf.Clamp(transform.eulerAngles.x + zoom, minAngle, maxAngle);
 		
 		transform.eulerAngles = new Vector3(angle, transform.eulerAngles.y, transform.eulerAngles.z);
-		transform.position = new Vector3( cameraTo.x, yZoom, cameraTo.z);
+		transform.position = cameraTo;
 		
 		Debug.Log(Input.GetAxis("Mouse ScrollWheel"));
 	}
