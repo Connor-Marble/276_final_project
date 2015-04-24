@@ -3,32 +3,28 @@ using System.Collections;
 
 public class Hero : MonoBehaviour {
 
-	public float health;
-	public float damage;   
-
 	NavMeshAgent navAgent;
 	public Vector3 target;
 	public bool isNewTarget;
 
 	public float radius = 1f;
+	public Collider nearby;
+	public LayerMask lookingFor;
 
-	public Collider[] nearby;
-	public LayerMask lookingFor;	
-	
-	// Use this for initialization
-	void Start () {
+	public virtual void Start () {
 		navAgent = GetComponent<NavMeshAgent>();
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		nearbyEnemies = Physics.OverlapSphere(transform.position, radius, enemies);
-		if(Physics.CheckSphere(transform.position, radius, enemies)){
+	public virtual void Update () {
+		nearby = Physics.OverlapSphere(transform.position, radius, lookingFor)[0];
+		if(Physics.CheckSphere(transform.position, radius, lookingFor)){
 			
-			Destroy(nearbyEnemies[0].gameObject);
+			Debug.Log("Hero: Target Aquired");
 		}
 		if(isNewTarget){
 			navAgent.SetDestination(target);
+			Debug.Log("Destination Set On My Way!");
 		}
 	}
 

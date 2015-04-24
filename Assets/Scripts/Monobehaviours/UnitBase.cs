@@ -9,7 +9,6 @@ public class UnitBase : MonoBehaviour {
 
 	[SerializeField]
 	private Transform finalGoal;
-	private float nav_speed;
 
 	UnitBase target;
 
@@ -26,7 +25,6 @@ public class UnitBase : MonoBehaviour {
 	void Start () {
 		navAgent = GetComponent<NavMeshAgent> ();
 		navAgent.destination = finalGoal.position;
-		nav_speed = navAgent.speed;
 	}
 	
 	// Update is called once per frame
