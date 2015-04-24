@@ -5,6 +5,7 @@ public class HealthSystem : MonoBehaviour {
 
 	[SerializeField]
 	private float startHealth;
+	[SerializeField]
 	private float health;
 
 	void Start(){

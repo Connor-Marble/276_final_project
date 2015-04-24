@@ -1,39 +1,30 @@
 using UnityEngine;
 using System.Collections;
 
-public class DefenseTower : MonoBehaviour{
+public class DefenseTower : Tower{
 
-	public float damage;
-	public float value;
-	
-	public float radius = 1f;
-	
-	public Collider[] nearbyEnemies;
-	public LayerMask enemies;
+	Laser laser;
 
-	LineRenderer line;
-	
-	// Use this for initialization
-	void Start () {
-		line = gameObject.GetComponent<LineRenderer>();
-		line.enabled = false;
+	void Start(){
+		laser = GetComponent<Laser>();
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		nearbyEnemies = Physics.OverlapSphere(transform.position, radius, enemies);
-
-		if(Physics.CheckSphere(transform.position, radius, enemies)){
-			Attack();
+	public override void Update(){
+		base.Update();
+		if(FocusFound()){
+			laser.Fire(nearby.gameObject);
+			Debug.Log("Firing at enemies");					   
 		}
 	}
+	
+	bool FocusFound(){		
+		if(Physics.CheckSphere(transform.position, radius, lookingFor.value)){
+			Debug.Log("Target Aquired");
+			nearby = Physics.OverlapSphere(transform.position, radius, lookingFor.value)[0];
+			return true;		   
+		}
+		Debug.Log("Everything Looks Fine");
+				return false;
+	}
+}	
 
-	void Attack(){
-		nearbyEnemies[0].GetComponent<HealthSystem>().Damage(damage);
-
-		line.enabled = true;
-
-		line.SetPosition(0, transform.GetChild(0).GetComponent<Transform>().position);
-		line.SetPosition(1, nearbyEnemies[0].GetComponent<Transform>().position);
-	}	
-}

@@ -8,8 +8,8 @@ public class Laser : MonoBehaviour, IWeapon {
 
 	[SerializeField]
 	private float range = 5f;
-
-	private float damage;
+	[SerializeField]
+	private float damage = 0f;
 
 	private float lastFire;
 

@@ -1,31 +1,23 @@
 using UnityEngine;
 using System.Collections;
 
-public class EconTower : MonoBehaviour{
-
-	public float value;
-	public float profitRate = 1f;
+public class EconTower : Tower{
+	
 	public int profit = 0;
-	public int runningCost = 0;
-
-	public GameObject homeBase;
-
-	float distance;
+	public float profitRate = 1f;
 
 	void Start(){
-		distance = Mathf.Abs((transform.position - homeBase.GetComponent<Transform>().position).magnitude);
-
-		profit += (int)distance;
+		nearby = Physics.OverlapSphere(transform.position, radius, lookingFor.value)[0];
+	}
+   
+	public override void Update(){
+		base.Update();
+		StartCoroutine("Profit");
 	}
 
-	void Update(){
-		StartCoroutine("FigureMoney");
-	}
-
-	IEnumerator FigureMoney(){
+	IEnumerator Profit(){
 		Debug.Log("Dolla Dolla Bill Yall!");
-		homeBase.GetComponent<EconomySystem>().AddMoney(profit);
-		homeBase.GetComponent<EconomySystem>().RemoveMoney(runningCost);
+		homeBase.GetComponent<EconomySystem>().AddMoney(profit);		
 
 		yield return new WaitForSeconds(profitRate);
 	}
