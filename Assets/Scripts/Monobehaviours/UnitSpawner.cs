@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 //structure to hold information
 //used to build units
@@ -35,4 +36,13 @@ public class UnitSpawner : MonoBehaviour {
 	void Update () {
 		
 	}
+
+	public UnitType[] GetUnitTypes(){
+		return unitTypes;
+	}
+
+	public void spawnUnitType(int lane, UnitType type){
+		Instantiate (type.prefab);
+	}
+	
 }
