@@ -2,6 +2,7 @@
 using System.Collections;
 
 [RequireComponent (typeof(HealthSystem))]
+[RequireComponent (typeof(IWeapon))]
 public class UnitBase : MonoBehaviour {
 
 	[SerializeField]
@@ -10,21 +11,27 @@ public class UnitBase : MonoBehaviour {
 	[SerializeField]
 	private Transform finalGoal;
 
+	[SerializeField]
+	private string goalName;
+
 	UnitBase target;
 
-	[SerializeField]
-	float attackRange = 5f;
-
-	[SerializeField]
-	float weapnPower;
+	IWeapon weapon;
 
 	NavMeshAgent navAgent;
 
 
 	// Use this for initialization
 	void Start () {
+
+		if (finalGoal == null)
+			finalGoal = GameObject.Find (goalName).transform;
+
 		navAgent = GetComponent<NavMeshAgent> ();
 		navAgent.destination = finalGoal.position;
+		weapon = GetComponent<IWeapon> ();
+
+
 	}
 	
 	// Update is called once per frame
@@ -42,8 +49,8 @@ public class UnitBase : MonoBehaviour {
 
 		if (target != null) {
 			float distance = GetDistancetoTarget ();
-			if (distance < attackRange)
-				Attack ();
+			if (distance < weapon.GetRange() && weapon.IsReady())
+				weapon.Fire(target.gameObject);
 
 			else {
 				target = null;
@@ -53,7 +60,10 @@ public class UnitBase : MonoBehaviour {
 	}
 
 	bool GetTarget () {
-		Collider[] potentialEnemies = Physics.OverlapSphere (transform.position, attackRange, targetLayer);
+		Collider[] potentialEnemies = Physics.OverlapSphere (transform.position, weapon.GetRange(), targetLayer);
+		if (potentialEnemies == null)
+			return false;
+
 		foreach (Collider coll in potentialEnemies) {
 			UnitBase enemyunit = coll.gameObject.GetComponent<UnitBase>();
 			if(enemyunit != null){
@@ -67,7 +77,7 @@ public class UnitBase : MonoBehaviour {
 	}
 
 	float GetDistancetoTarget(){
-		return Vector3.Distance (transform.position, target.gameObject.transform.position);
+		return Vector3.Distance (transform.position, target.gameObject.transform.position)-5f;
 	}
 
 	void Attack(){
