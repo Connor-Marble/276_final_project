@@ -8,9 +8,8 @@ public class Laser : MonoBehaviour, IWeapon {
 
 	[SerializeField]
 	private float range = 5f;
-
 	[SerializeField]
-	private float damage = 1f;
+	private float damage = 0f;
 
 	private float lastFire;
 
@@ -18,10 +17,8 @@ public class Laser : MonoBehaviour, IWeapon {
 
 	public void Fire (GameObject target)
 	{
-		Debug.Log ("firing");
 		lastFire = Time.timeSinceLevelLoad;
 		HealthSystem targetHealth = target.GetComponent<HealthSystem> ();
-		Debug.DrawLine (transform.position, target.transform.position);
 		if (targetHealth != null) {
 			targetHealth.Damage(damage);
 		}

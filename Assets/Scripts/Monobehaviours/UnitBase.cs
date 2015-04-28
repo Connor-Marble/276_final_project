@@ -80,4 +80,9 @@ public class UnitBase : MonoBehaviour {
 		return Vector3.Distance (transform.position, target.gameObject.transform.position)-5f;
 	}
 
+	void Attack(){
+		HealthSystem enemyHealth = target.GetComponent<HealthSystem> ();
+		enemyHealth.Damage (weapnPower);
+		Debug.DrawLine (transform.position, target.transform.position, Color.red);
+	}
 }

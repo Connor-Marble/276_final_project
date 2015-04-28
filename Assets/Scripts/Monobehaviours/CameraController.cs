@@ -9,8 +9,8 @@ public class CameraController : MonoBehaviour {
 	public float minYZoom = 10f;
 	public float maxXPan = 18;
 	public float minXPan = -54;
-	public float maxZPan = 300;
-	public float minZPan = 100;
+	public float maxZPan = 230;
+	public float minZPan = -100;
 	public float minAngle = 20;
 	public float maxAngle = 45;
 	
@@ -42,9 +42,8 @@ public class CameraController : MonoBehaviour {
 		float angle = Mathf.Clamp(transform.eulerAngles.x + zoom, minAngle, maxAngle);
 		
 		transform.eulerAngles = new Vector3(angle, transform.eulerAngles.y, transform.eulerAngles.z);
-		transform.position = cameraTo;
-		
-		Debug.Log(Input.GetAxis("Mouse ScrollWheel"));
+		transform.position = new Vector3( cameraTo.x, yZoom, cameraTo.z);
+				
 	}
 
 	void Translate(){
