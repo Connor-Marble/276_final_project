@@ -13,8 +13,6 @@ public class UnitBase : MonoBehaviour {
 
 	UnitBase target;
 
-	float weapnPower;
-
 	IWeapon weapon;
 
 	NavMeshAgent navAgent;
@@ -22,9 +20,15 @@ public class UnitBase : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+		if (finalGoal == null)
+			finalGoal = GameObject.Find ("Enemy").transform;
+
 		navAgent = GetComponent<NavMeshAgent> ();
 		navAgent.destination = finalGoal.position;
 		weapon = GetComponent<IWeapon> ();
+
+
 	}
 	
 	// Update is called once per frame
@@ -54,6 +58,9 @@ public class UnitBase : MonoBehaviour {
 
 	bool GetTarget () {
 		Collider[] potentialEnemies = Physics.OverlapSphere (transform.position, weapon.GetRange(), targetLayer);
+		if (potentialEnemies == null)
+			return false;
+
 		foreach (Collider coll in potentialEnemies) {
 			UnitBase enemyunit = coll.gameObject.GetComponent<UnitBase>();
 			if(enemyunit != null){

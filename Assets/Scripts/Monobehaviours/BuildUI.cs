@@ -36,6 +36,8 @@ public class BuildUI : MonoBehaviour {
 	public void setLane(int value){
 		lane = value;
 		unitButtons.SetActive (value >= 0);
+		if (value >= 0)
+			spawner.setActiveLane (value);
 	}
 
 	public void HideUI(){
@@ -72,10 +74,11 @@ public class BuildUI : MonoBehaviour {
 
 			Text queueText = buildButton.transform.FindChild("Queued").GetComponent<Text>();
 			queueText.text = "0";
+			spawner.SetBuildCountText(queueText, types[i]);
 
 			Button button = buildButton.GetComponent<Button>();
 			int j = i;
-			button.onClick.AddListener(() => buildUnit(types[j]));
+			button.onClick.AddListener(() => buildUnit(types[j],queueText));
 
 
 		}
@@ -83,8 +86,8 @@ public class BuildUI : MonoBehaviour {
 		unitButtons = parentObject;
 	}
 
-	private void buildUnit(UnitType type){
-		spawner.spawnUnitType(lane, type);
+	private void buildUnit(UnitType type, Text queueText){
+		spawner.QueueUnit(lane,type);
 	}
 	
 }
