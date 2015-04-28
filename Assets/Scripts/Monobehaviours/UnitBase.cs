@@ -11,6 +11,9 @@ public class UnitBase : MonoBehaviour {
 	[SerializeField]
 	private Transform finalGoal;
 
+	[SerializeField]
+	private string goalName;
+
 	UnitBase target;
 
 	IWeapon weapon;
@@ -22,7 +25,7 @@ public class UnitBase : MonoBehaviour {
 	void Start () {
 
 		if (finalGoal == null)
-			finalGoal = GameObject.Find ("Enemy").transform;
+			finalGoal = GameObject.Find (goalName).transform;
 
 		navAgent = GetComponent<NavMeshAgent> ();
 		navAgent.destination = finalGoal.position;
@@ -74,7 +77,7 @@ public class UnitBase : MonoBehaviour {
 	}
 
 	float GetDistancetoTarget(){
-		return Vector3.Distance (transform.position, target.gameObject.transform.position);
+		return Vector3.Distance (transform.position, target.gameObject.transform.position)-5f;
 	}
 
 }

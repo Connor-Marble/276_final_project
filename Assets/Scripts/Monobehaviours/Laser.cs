@@ -18,8 +18,10 @@ public class Laser : MonoBehaviour, IWeapon {
 
 	public void Fire (GameObject target)
 	{
+		Debug.Log ("firing");
 		lastFire = Time.timeSinceLevelLoad;
 		HealthSystem targetHealth = target.GetComponent<HealthSystem> ();
+		Debug.DrawLine (transform.position, target.transform.position);
 		if (targetHealth != null) {
 			targetHealth.Damage(damage);
 		}
