@@ -9,9 +9,15 @@ public class Laser : MonoBehaviour, IWeapon {
 	[SerializeField]
 	private float range = 5f;
 	[SerializeField]
-	private float damage = 0f;
+	private float damage = 1f;
+
+	[SerializeField]
+	private Transform origin;
 
 	private float lastFire;
+
+	[SerializeField]
+	private GameObject effect;
 
 	#region IWeapon implementation
 
@@ -21,6 +27,10 @@ public class Laser : MonoBehaviour, IWeapon {
 		HealthSystem targetHealth = target.GetComponent<HealthSystem> ();
 		if (targetHealth != null) {
 			targetHealth.Damage(damage);
+			GameObject laser = (GameObject)Instantiate(effect, target.transform.position, Quaternion.identity);
+			LaserEffect fireEffect = laser.GetComponent<LaserEffect>();
+			fireEffect.origin = this.origin.position;
+			fireEffect.target = target.transform.position;
 		}
 	}
 
