@@ -16,12 +16,18 @@ public class HealthSystem : MonoBehaviour {
 		return health;
 	}
 
+	public float GetStartHealth(){
+		return startHealth;
+	}
+
 	public float GetRelativeHealth(){
 		return health / startHealth;
 	}
 
 	public void Heal(float amount){
 		health += amount;
+		Mathf.Clamp(health, startHealth, 0f);
+		Debug.Log("healed: " + amount);
 	}
 
 	public void Damage(float amount){
@@ -32,5 +38,9 @@ public class HealthSystem : MonoBehaviour {
 
 	void Die(){
 		Destroy (this.gameObject);
+	}
+
+	public void IncreaseHealth(float amount){
+		startHealth += amount;
 	}
 }

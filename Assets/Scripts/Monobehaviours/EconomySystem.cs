@@ -12,8 +12,7 @@ public class EconomySystem : MonoBehaviour{
 		bankText.text = bank.ToString();
 	}
 
-	public void AddMoney(int profit){
-		Debug.Log("Dolla Dolla Bill Yall!");
+	public void AddMoney(int profit){		
 		bank += profit;
 	}
 

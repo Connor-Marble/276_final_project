@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Engineer : Hero {	
 
-	int buildRate = 1;	
+	float buildRate = 1f;
 
 	// Use this for initialization
 	public override void Start () {
@@ -13,16 +13,20 @@ public class Engineer : Hero {
 	// Update is called once per frame
 	public override void Update () {
 		base.Update();
-	}
-
-	public void BuildTower(GameObject preTower, GameObject postTower, Vector3 location, int cost){
-		
-		Object buildTower = Instantiate(preTower, location, Quaternion.identity);
-		Destroy(buildTower, CalculateBuildTime(cost));
-		Instantiate(postTower, location, Quaternion.identity);
+		if(nearby != null && nearby.GetComponent<HealthSystem>().GetHealth() < 100f){
+			StartCoroutine("Heal");			
+		}
 	}
 
 	float CalculateBuildTime(int cost){
 		return ((float)cost/buildRate);
+	}
+
+	IEnumerator Heal(){
+		if(nearby.GetComponent<HealthSystem>().GetHealth() == 1f){
+			nearby.GetComponent<HealthSystem>().IncreaseHealth(99f);
+		}
+		nearby.GetComponent<HealthSystem>().Heal(1f);
+		yield return new WaitForSeconds(buildRate);		
 	}
 }
