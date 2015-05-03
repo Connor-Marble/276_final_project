@@ -17,6 +17,15 @@ public class CameraController : MonoBehaviour {
 	float zoom;
 	float yZoom;
 
+	private Quaternion lowAngle;
+	private Quaternion highAngle;
+
+	void Start() {
+		lowAngle = new Quaternion (0, -1, 0, 0);
+		highAngle = new Quaternion (0, -1, 1, 0);
+		Zoom();
+	}
+
     void Update(){
 		zoom = Input.GetAxis("Mouse ScrollWheel");
 
@@ -25,29 +34,30 @@ public class CameraController : MonoBehaviour {
 		}
 
 		if(Input.GetMouseButton(2)){
-			Debug.Log("Middle Mouse button pressed");
 			Translate();
 		}
+
+
 	}
 
 	void Zoom(){
 		Vector3 localPos = transform.localPosition;
 		// zoom = Mathf.Clamp(zoom, minZoom, maxZoom);
-		yZoom = Mathf.Clamp(localPos.y + zoom, minYZoom, maxYZoom);
+		yZoom = Mathf.Clamp(localPos.y + zoom * zoomSpeed, minYZoom, maxYZoom) ;
 
 		Vector3 cameraTo = new Vector3 (localPos.x,
 										localPos.y + zoom * zoomSpeed,
 										localPos.z);
 
-		float angle = Mathf.Clamp(transform.eulerAngles.x + zoom, minAngle, maxAngle);
-		
-		transform.eulerAngles = new Vector3(angle, transform.eulerAngles.y, transform.eulerAngles.z);
+		float zoomRatio = (yZoom - minYZoom) / (maxYZoom - minYZoom);
+		float angleZoom = (zoomRatio)*((maxAngle-minAngle)/90) + (minAngle/90);
+		transform.rotation = Quaternion.Slerp(lowAngle, highAngle, angleZoom);
+
 		transform.position = new Vector3( cameraTo.x, yZoom, cameraTo.z);
 				
 	}
 
 	void Translate(){
-		Debug.Log("Translate started");
 		Vector3 translation = Vector3.zero;
 
 		float xPan = translation.x - Input.GetAxis("Mouse X") * -dragSpeed *Time.deltaTime;
