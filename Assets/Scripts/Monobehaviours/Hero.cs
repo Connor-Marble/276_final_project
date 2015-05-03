@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Hero : MonoBehaviour {
 
-	NavMeshAgent navAgent;
+	protected NavMeshAgent navAgent;
 	public Vector3 target;
 	public bool isNewTarget;
 
@@ -16,20 +16,30 @@ public class Hero : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	public virtual void Update () {
-		nearby = Physics.OverlapSphere(transform.position, radius, lookingFor)[0];
-		if(Physics.CheckSphere(transform.position, radius, lookingFor)){
-			
-			Debug.Log("Hero: Target Aquired");
+	public virtual void Update () {		
+		if(Look()){
+			nearby = Physics.OverlapSphere(transform.position, radius, lookingFor)[0];			
 		}
 		if(isNewTarget){
+			navAgent.Resume();
 			navAgent.SetDestination(target);
-			Debug.Log("Destination Set On My Way!");
 		}
+		if(target == transform.position){
+			navAgent.Stop();
+		}
+
+		
 	}
 
 	public void SetTarget(Vector3 newTarget){
 		target = newTarget;
 		isNewTarget = true;
+	}
+
+	bool Look(){
+		if(Physics.CheckSphere(transform.position, radius, lookingFor.value)){
+			return true;
+		}
+		return false;
 	}
 }
