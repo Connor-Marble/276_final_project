@@ -12,6 +12,8 @@ public class HealthBar : MonoBehaviour {
 
 	[SerializeField]
 	private float width = 10f;
+	
+	private float startWidth;
 
 	[SerializeField]
 	private float height = 3f;
@@ -27,10 +29,12 @@ public class HealthBar : MonoBehaviour {
 		health = GetComponent<HealthSystem> ();
 		InvokeRepeating ("CheckHit", Random.value, 0.3f);
 		renderer = transform.GetComponentInChildren<Renderer> ();
+		startWidth = width;
 	}
 
 	void CheckHit(){
 		display = health.GetRelativeHealth () < 1f;
+		width = startWidth*health.GetRelativeHealth();
 	}
 	
 	// Update is called once per frame

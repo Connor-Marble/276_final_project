@@ -52,20 +52,28 @@ public class BuildUI : MonoBehaviour {
 	private void createUnitButtons(Vector2 size, float yOffset){
 		UnitType[] types = spawner.GetUnitTypes ();
 		GameObject parentObject = new GameObject ();
+		
+		//create button for each unit type
 		for (int i =0; i<types.Length; i++) {
+			//create button
 			GameObject buildButton = Instantiate(unitButtonPrefab);
 			RectTransform buttonTrans = buildButton.GetComponent<RectTransform>();
+			
+			//set position
 			buildButton.transform.position = new Vector2(
 					Mathf.Lerp(-size.x*buttonTrans.sizeDelta.x/2 + Screen.width/2, 
 			        size.x*buttonTrans.sizeDelta.x/2 + Screen.width/2,
 			        ((float)i)/((float)types.Length)),
 					yOffset + buttonTrans.sizeDelta.y);
-
+			
 			buttonTrans.position += (Vector3)Vector2.right*buttonTrans.sizeDelta.x/2;
+			
+			//set partent to menu parent
 			buildButton.transform.SetParent(parentObject.transform);
 
-			buttonTrans.localScale = size/types.Length;
-
+			//buttonTrans.localScale = size/types.Length;
+			
+			//set the text content of the button's various text children
 			Text nameText = buildButton.transform.FindChild("Name").GetComponent<Text>();
 			nameText.text = types[i].unitName;
 
@@ -77,6 +85,7 @@ public class BuildUI : MonoBehaviour {
 			spawner.SetBuildCountText(queueText, types[i]);
 
 			Button button = buildButton.GetComponent<Button>();
+			
 			int j = i;
 			button.onClick.AddListener(() => buildUnit(types[j],queueText));
 
