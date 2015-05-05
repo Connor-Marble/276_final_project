@@ -14,6 +14,10 @@ public class Rocket : MonoBehaviour {
 	[SerializeField]
 	private float damage = 15f;
 
+	[SerializeField]
+	private GameObject explosion;
+	private bool exploding = false;
+
 	// Use this for initialization
 	void Start () {
 		Invoke("explode", explodeTime);
@@ -35,16 +39,23 @@ public class Rocket : MonoBehaviour {
 	
 	void OnCollisionEnter(Collision coll){
 		explode();
-		HealthSystem enemyHealth = coll.collider.gameObject.GetComponent<HealthSystem>();
-		if(enemyHealth!=null){
-			enemyHealth.Damage(damage);
+		if (coll.gameObject.transform == target) {
+			HealthSystem enemyHealth = coll.collider.gameObject.GetComponent<HealthSystem> ();
+			if (enemyHealth != null) {
+				enemyHealth.Damage (damage);
+			}
 		}
 	}
 	
 	void explode (){
+		if(exploding)
+			return;
+			
+		exploding = true;
 		Destroy(gameObject, 1f);
 		rbody.isKinematic = true;
 		GetComponent<Renderer>().enabled = false;
+		Instantiate (explosion, transform.position, Quaternion.identity);
 	}
 	
 }

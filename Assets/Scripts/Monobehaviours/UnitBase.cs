@@ -14,7 +14,7 @@ public class UnitBase : MonoBehaviour {
 	[SerializeField]
 	private string goalName;
 
-	UnitBase target;
+	GameObject target;
 
 	IWeapon weapon;
 
@@ -50,7 +50,7 @@ public class UnitBase : MonoBehaviour {
 		if (target != null) {
 			float distance = GetDistancetoTarget ();
 			if (distance < weapon.GetRange() && weapon.IsReady())
-				weapon.Fire(target.gameObject);
+				weapon.Fire(target);
 
 			else {
 				target = null;
@@ -65,10 +65,10 @@ public class UnitBase : MonoBehaviour {
 			return false;
 
 		foreach (Collider coll in potentialEnemies) {
-			UnitBase enemyunit = coll.gameObject.GetComponent<UnitBase>();
-			if(enemyunit != null){
+			HealthSystem enemyHealth = coll.gameObject.GetComponent<HealthSystem>();
+			if(enemyHealth != null && Vector3.Distance(transform.position, coll.transform.position)<weapon.GetRange()){
 
-				target = enemyunit;
+				target = coll.gameObject;
 				return true;
 			}
 		}
@@ -77,7 +77,7 @@ public class UnitBase : MonoBehaviour {
 	}
 
 	float GetDistancetoTarget(){
-		return Vector3.Distance (transform.position, target.gameObject.transform.position)-5f;
+		return Vector3.Distance (transform.position, target.transform.position)-5f;
 	}
 
 }
