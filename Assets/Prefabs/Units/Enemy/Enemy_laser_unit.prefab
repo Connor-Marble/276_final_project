@@ -397,7 +397,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireDelay: 1
-  range: 5
+  range: 10
   damage: 1
   origin: {fileID: 428680}
   effect: {fileID: 178992, guid: 56fbfb0bf9b7cff49bcb9f74786b5319, type: 2}
@@ -416,7 +416,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   finalGoal: {fileID: 0}
-  goalName: Player
+  startGoalName: 
+  endGoalName: Player
 --- !u!114 &11466174
 MonoBehaviour:
   m_ObjectHideFlags: 1

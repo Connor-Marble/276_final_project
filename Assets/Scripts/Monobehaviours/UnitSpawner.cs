@@ -17,6 +17,7 @@ public class UnitSpawner : MonoBehaviour {
 
 	[SerializeField]
 	private UnitType[] unitTypes;
+	private string[] goals = {"Left", "Mid", "Right"};
 
 	public const int left   = 0;
 	public const int middle = 1;
@@ -66,7 +67,9 @@ public class UnitSpawner : MonoBehaviour {
 	}
 	
 	void spawnUnitType(int lane, UnitType type){
-		Instantiate (type.prefab, spawnPoints[lane].position, spawnPoints[lane].rotation);
+		GameObject unit = (GameObject)Instantiate (type.prefab, spawnPoints[lane].position, spawnPoints[lane].rotation);
+		UnitBase unitBase = unit.GetComponent<UnitBase>();
+		unitBase.startGoalName = goals[lane];
 	}
 
 	public void QueueUnit(int lane, UnitType type){

@@ -10,10 +10,12 @@ public class UnitBase : MonoBehaviour {
 
 	[SerializeField]
 	private Transform finalGoal;
+	private Transform startGoal;
+	private Transform currentGoal;
 
+	public string startGoalName;
 	[SerializeField]
-	private string goalName;
-
+	private string endGoalName;
 	GameObject target;
 
 	IWeapon weapon;
@@ -25,10 +27,14 @@ public class UnitBase : MonoBehaviour {
 	void Start () {
 
 		if (finalGoal == null)
-			finalGoal = GameObject.Find (goalName).transform;
+			finalGoal = GameObject.Find (endGoalName).transform;
+			
+		if(startGoal == null)
+			startGoal = GameObject.Find(startGoalName).transform;
 
+		currentGoal = startGoal;
 		navAgent = GetComponent<NavMeshAgent> ();
-		navAgent.destination = finalGoal.position;
+		navAgent.destination = currentGoal.position;
 		weapon = GetComponent<IWeapon> ();
 
 
@@ -43,7 +49,7 @@ public class UnitBase : MonoBehaviour {
 			}
 			else{
 				navAgent.Resume();
-				navAgent.destination = finalGoal.position;
+				navAgent.destination = currentGoal.position;
 			}
 		}
 
@@ -56,6 +62,13 @@ public class UnitBase : MonoBehaviour {
 				target = null;
 				return;
 			}
+		}
+		updateGoal();
+	}
+	
+	void updateGoal(){
+		if(Vector3.Distance(transform.position, startGoal.position)<10f){
+			currentGoal = finalGoal;
 		}
 	}
 

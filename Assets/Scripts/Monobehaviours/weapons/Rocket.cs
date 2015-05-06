@@ -39,12 +39,12 @@ public class Rocket : MonoBehaviour {
 	
 	void OnCollisionEnter(Collision coll){
 		explode();
-		if (coll.gameObject.transform == target) {
-			HealthSystem enemyHealth = coll.collider.gameObject.GetComponent<HealthSystem> ();
-			if (enemyHealth != null) {
-				enemyHealth.Damage (damage);
-			}
+
+		HealthSystem enemyHealth = target.gameObject.GetComponent<HealthSystem> ();
+		if (enemyHealth != null) {
+			enemyHealth.Damage (damage);
 		}
+		
 	}
 	
 	void explode (){
