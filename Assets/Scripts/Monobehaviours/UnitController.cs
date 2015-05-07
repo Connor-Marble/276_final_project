@@ -6,28 +6,33 @@ public class UnitController : MonoBehaviour{
 	public LayerMask playerUnits;
 	public LayerMask terrainLayer;
 	public bool unitSelected = false;
-	public bool createTower = false;
+	public bool createUnit = false;
+	[SerializeField]
+	private bool isUsingUI = false;
 	public GameObject homeBase;
 
-	RaycastHit unitHitInfo = new RaycastHit();
+	public RaycastHit unitHitInfo = new RaycastHit();
 	RaycastHit terrainHitInfo = new RaycastHit();
 	Vector3 towerLoc;
 
-	public GameObject econTower;
-	public GameObject i_tower;
+	public GameObject constructionProject;
 
 	void Update(){
-		if(Input.GetMouseButtonDown(0)){
+		if(Input.GetMouseButtonDown(0) && !isUsingUI){
 			Debug.Log("Left Click");
-			SelectUnit();			
+			SelectUnit();
+		}
+
+		if(!unitSelected){
+			GetComponent<EngineerUI>().HideUI();
 		}
 
 		if(Input.GetMouseButtonDown(1) && unitSelected){			
 			Debug.Log("Right Click");			
 			MoveUnit();
-			if(createTower){
-				towerLoc = new Vector3(terrainHitInfo.point.x, 2.5f, terrainHitInfo.point.z);
-				BuildTower(econTower);	
+			if(createUnit){
+				towerLoc = new Vector3(terrainHitInfo.point.x, .15f, terrainHitInfo.point.z);
+				BuildTower(constructionProject);
 			}
 		}
  	}
@@ -38,6 +43,9 @@ public class UnitController : MonoBehaviour{
 								   Mathf.Infinity,
 								   playerUnits.value);
 	    unitSelected = hit ? true : false;
+		if(unitSelected){
+			GetComponent<EngineerUI>().ShowUI();
+		}
 	}
 
 	void MoveUnit(){
@@ -55,5 +63,14 @@ public class UnitController : MonoBehaviour{
 		GameObject newTower = (GameObject)Instantiate(tower, towerLoc, Quaternion.identity);
 		newTower.GetComponent<Tower>().SetHomeBase(homeBase);
 		Debug.Log("Building Tower");
+	}
+
+	public void SetBuildContext(GameObject constructionProject){
+		createUnit = true;
+		this.constructionProject = constructionProject;
+	}
+
+	public void SetIsUsingUI(bool isUsingUI){
+		this.isUsingUI = isUsingUI;
 	}
 }
