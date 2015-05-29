@@ -16,12 +16,15 @@ public class BuildUI : MonoBehaviour {
 
 	private Button[] buildButtons;
 	private Text[] buildCounts;
+	
+	EconomySystem econ;
 
 	// Use this for initialization
 	void Start () {
 		spawner = GetComponent<UnitSpawner> ();
 		createUnitButtons (Vector2.one*spawner.GetUnitTypes().Length, 20f);
 		HideUI ();
+		econ = GetComponent<EconomySystem>();
 	}
 	
 	// Update is called once per frame
@@ -96,7 +99,11 @@ public class BuildUI : MonoBehaviour {
 	}
 
 	private void buildUnit(UnitType type, Text queueText){
-		spawner.QueueUnit(lane,type);
+		int cost = (int)type.buildCost;
+		if(econ.GetMoney()>cost){
+			spawner.QueueUnit(lane,type);
+			econ.RemoveMoney(cost);
+		}
 	}
 	
 }

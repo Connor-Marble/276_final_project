@@ -368,7 +368,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   finalGoal: {fileID: 0}
-  goalName: Enemy
+  startGoalName: 
+  endGoalName: Enemy
 --- !u!114 &11466288
 MonoBehaviour:
   m_ObjectHideFlags: 1

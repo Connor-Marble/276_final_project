@@ -10,11 +10,13 @@ public class UnitBase : MonoBehaviour {
 
 	[SerializeField]
 	private Transform finalGoal;
+	private Transform startGoal;
+	private Transform currentGoal;
 
+	public string startGoalName;
 	[SerializeField]
-	private string goalName;
-
-	UnitBase target;
+	private string endGoalName;
+	GameObject target;
 
 	IWeapon weapon;
 
@@ -25,10 +27,14 @@ public class UnitBase : MonoBehaviour {
 	void Start () {
 
 		if (finalGoal == null)
-			finalGoal = GameObject.Find (goalName).transform;
+			finalGoal = GameObject.Find (endGoalName).transform;
+			
+		if(startGoal == null)
+			startGoal = GameObject.Find(startGoalName).transform;
 
+		currentGoal = startGoal;
 		navAgent = GetComponent<NavMeshAgent> ();
-		navAgent.destination = finalGoal.position;
+		navAgent.destination = currentGoal.position;
 		weapon = GetComponent<IWeapon> ();
 
 
@@ -43,19 +49,26 @@ public class UnitBase : MonoBehaviour {
 			}
 			else{
 				navAgent.Resume();
-				navAgent.destination = finalGoal.position;
+				navAgent.destination = currentGoal.position;
 			}
 		}
 
 		if (target != null) {
 			float distance = GetDistancetoTarget ();
 			if (distance < weapon.GetRange() && weapon.IsReady())
-				weapon.Fire(target.gameObject);
+				weapon.Fire(target);
 
 			else {
 				target = null;
 				return;
 			}
+		}
+		updateGoal();
+	}
+	
+	void updateGoal(){
+		if(Vector3.Distance(transform.position, startGoal.position)<10f){
+			currentGoal = finalGoal;
 		}
 	}
 
@@ -65,10 +78,10 @@ public class UnitBase : MonoBehaviour {
 			return false;
 
 		foreach (Collider coll in potentialEnemies) {
-			UnitBase enemyunit = coll.gameObject.GetComponent<UnitBase>();
-			if(enemyunit != null){
+			HealthSystem enemyHealth = coll.gameObject.GetComponent<HealthSystem>();
+			if(enemyHealth != null && Vector3.Distance(transform.position, coll.transform.position)<weapon.GetRange()){
 
-				target = enemyunit;
+				target = coll.gameObject;
 				return true;
 			}
 		}
@@ -77,7 +90,7 @@ public class UnitBase : MonoBehaviour {
 	}
 
 	float GetDistancetoTarget(){
-		return Vector3.Distance (transform.position, target.gameObject.transform.position)-5f;
+		return Vector3.Distance (transform.position, target.transform.position)-5f;
 	}
 
 }

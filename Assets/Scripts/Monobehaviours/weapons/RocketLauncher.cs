@@ -4,7 +4,7 @@ using System.Collections;
 public class RocketLauncher : MonoBehaviour, IWeapon {
 
 	[SerializeField]
-	private float range=5f;
+	private float range=12f;
 	
 	[SerializeField]
 	private GameObject rocketPrefab;
@@ -28,7 +28,7 @@ public class RocketLauncher : MonoBehaviour, IWeapon {
 	
 	public void Fire(GameObject target){
 		GameObject rocket_go = (GameObject)Instantiate(rocketPrefab, launcher.position, launcher.rotation);
-		rocket_go.transform.Rotate(transform.right*-90);
+		rocket_go.transform.Rotate(Vector3.right*90f);
 		Rocket rocket = rocket_go.GetComponent<Rocket>();
 		rocket.target = target.transform;
 		lastFire = Time.timeSinceLevelLoad;

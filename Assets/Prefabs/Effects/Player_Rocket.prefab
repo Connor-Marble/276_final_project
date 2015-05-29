@@ -180,6 +180,7 @@ MonoBehaviour:
   target: {fileID: 0}
   explodeTime: 5
   damage: 15
+  explosion: {fileID: 197390, guid: 260a8eff6bcb0a244ab22d97a3ef7a73, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
